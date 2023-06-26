@@ -31,12 +31,12 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function fetchCityData(input) {
-    const url = `https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${input}&limit=5`;
+    const url = `https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch=${input} in india&srprop=size`;
 
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        cities = data[1]; // Store the city options
+        cities = data.query.search.map(item => item.title);
         populateCityDropdown();
       })
       .catch(error => {
