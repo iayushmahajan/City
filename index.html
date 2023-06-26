@@ -3,6 +3,7 @@
 <head>
   <title>City Information Lookup</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -13,7 +14,7 @@
     </div>
     <div class="dropdown-container">
       <label for="cityDropdown">Select a city:</label>
-      <select id="cityDropdown"></select>
+      <input type="text" id="cityInput" placeholder="Start typing a city name...">
     </div>
     <button id="getInfoButton" disabled>Get Info</button>
     <div id="cityInfoContainer" class="city-info-container">
