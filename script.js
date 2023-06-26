@@ -28,22 +28,23 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function fetchCityData(input) {
-    const url = `https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${input}&limit=5`;
+  const url = `https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${input}&limit=5`;
 
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        const cities = data[1];
-        cities.forEach(city => {
-          const option = document.createElement("option");
-          option.textContent = city;
-          cityDropdown.appendChild(option);
-        });
-      })
-      .catch(error => {
-        console.log("Error fetching city data:", error);
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const cities = data[1];
+      clearCityDropdown(); // Clear previous dropdown options
+      cities.forEach(city => {
+        const option = document.createElement("option");
+        option.textContent = city;
+        cityDropdown.appendChild(option);
       });
-  }
+    })
+    .catch(error => {
+      console.log("Error fetching city data:", error);
+    });
+}
 
   function fetchCityDetails(city) {
     const url = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&format=json&titles=${city}`;
