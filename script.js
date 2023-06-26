@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
   const cityInput = document.getElementById("cityInput");
-  const cityDropdown = document.getElementById("cityDropdown");
   const getInfoButton = document.getElementById("getInfoButton");
   const cityRank = document.getElementById("cityRank");
   const cityPopulation2011 = document.getElementById("cityPopulation2011");
@@ -8,29 +7,31 @@ document.addEventListener("DOMContentLoaded", function() {
   const cityState = document.getElementById("cityState");
 
   let cities = []; // Array to store city options
+  let awesomplete;
 
   cityInput.addEventListener("input", function() {
     const input = cityInput.value.trim().toLowerCase();
-    clearCityDropdown();
-    if (input.length > 0) {
-      fetchCityData(input);
-    }
+    filterCities(input);
   });
 
   getInfoButton.addEventListener("click", function() {
-    const selectedCity = cityDropdown.value;
+    const selectedCity = cityInput.value.trim();
     if (selectedCity) {
       fetchCityDetails(selectedCity);
     }
   });
 
-  function clearCityDropdown() {
-    cities = [];
-    cityDropdown.innerHTML = "";
-    getInfoButton.disabled = true;
+  function filterCities(input) {
+    const filteredCities = cities.filter(city => city.toLowerCase().includes(input));
+    awesomplete.list = filteredCities;
+    if (filteredCities.length > 0) {
+      getInfoButton.disabled = false;
+    } else {
+      getInfoButton.disabled = true;
+    }
   }
 
-  function fetchCityData(input) {
+  function fetchCityData() {
     const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&titles=List_of_cities_in_India_by_population&rvprop=content&formatversion=2`;
 
     fetch(url)
@@ -38,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
       .then(data => {
         const pageContent = data.query.pages[0].revisions[0].content;
         cities = extractCitiesFromPageContent(pageContent);
-        filterCities(input);
+        initializeAwesomplete();
       })
       .catch(error => {
         console.log("Error fetching city data:", error);
@@ -57,26 +58,14 @@ document.addEventListener("DOMContentLoaded", function() {
     return matches.map(match => match[1]);
   }
 
-  function filterCities(input) {
-    const filteredCities = cities.filter(city => city.toLowerCase().includes(input));
-    populateCityDropdown(filteredCities);
+  function initializeAwesomplete() {
+    awesomplete = new Awesomplete(cityInput, {
+      list: cities,
+      minChars: 1,
+      maxItems: 10,
+      autoFirst: true
+    });
   }
-
-  function populateCityDropdown(cityOptions) {
-  cityDropdown.innerHTML = "";
-  cityOptions.forEach(city => {
-    const option = document.createElement("option");
-    option.value = city;
-    option.textContent = city;
-    cityDropdown.appendChild(option);
-  });
-  if (cityOptions.length > 0) {
-    getInfoButton.disabled = false;
-  } else {
-    getInfoButton.disabled = true;
-  }
-}
-
 
   function fetchCityDetails(city) {
     const url = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&format=json&titles=${city}`;
@@ -114,4 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
       cityState.textContent = "";
     }
   }
+
+  // Fetch city data and initialize Awesomplete
+  fetchCityData();
 });
