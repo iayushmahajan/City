@@ -31,40 +31,46 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function fetchCityData(input) {
-  const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&titles=List_of_cities_in_India_by_population&rvprop=content&formatversion=2`;
+    const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&titles=List_of_cities_in_India_by_population&rvprop=content&formatversion=2`;
 
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      const pageContent = data.query.pages[0].revisions[0].content;
-      cities = extractCitiesFromPageContent(pageContent);
-      filterCities(input);
-    })
-    .catch(error => {
-      console.log("Error fetching city data:", error);
-    });
-}
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const pageContent = data.query.pages[0].revisions[0].content;
+        cities = extractCitiesFromPageContent(pageContent);
+        filterCities(input);
+      })
+      .catch(error => {
+        console.log("Error fetching city data:", error);
+      });
+  }
 
-function extractCitiesFromPageContent(pageContent) {
-  const startMarker = '{{City-state-header|' + new Date().getFullYear();
-  const endMarker = '}}';
-  const startIndex = pageContent.indexOf(startMarker);
-  const endIndex = pageContent.indexOf(endMarker, startIndex);
+  function extractCitiesFromPageContent(pageContent) {
+    const startMarker = '{{City-state-header|' + new Date().getFullYear();
+    const endMarker = '}}';
+    const startIndex = pageContent.indexOf(startMarker);
+    const endIndex = pageContent.indexOf(endMarker, startIndex);
 
-  const tableContent = pageContent.substring(startIndex, endIndex);
-  const regex = /\|\s*city\s*=\s*(.*?)\s*(\||\n)/g;
-  const matches = [...tableContent.matchAll(regex)];
-  return matches.map(match => match[1]);
-}
+    const tableContent = pageContent.substring(startIndex, endIndex);
+    const regex = /\|\s*city\s*=\s*(.*?)\s*(\||\n)/g;
+    const matches = [...tableContent.matchAll(regex)];
+    return matches.map(match => match[1]);
+  }
 
+  function filterCities(input) {
+    const filteredCities = cities.filter(city => city.toLowerCase().includes(input));
+    populateCityDropdown(filteredCities);
+  }
 
-
-  function populateCityDropdown() {
-    cities.forEach(city => {
+  function populateCityDropdown(cityOptions) {
+    cityOptions.forEach(city => {
       const option = document.createElement("option");
       option.textContent = city;
       cityDropdown.appendChild(option);
     });
+    if (cityOptions.length > 0) {
+      getInfoButton.disabled = false;
+    }
   }
 
   function fetchCityDetails(city) {
