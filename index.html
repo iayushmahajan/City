@@ -1,30 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>City Information Lookup</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.js"></script>
+  <title>Cities in India</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>City Information Lookup</h1>
-    <div class="input-container">
-      <label for="cityInput">Enter a city name:</label>
-      <input type="text" id="cityInput" placeholder="Start typing a city name...">
-    </div>
-    <div class="dropdown-container">
-      <label for="cityInput">Select a city:</label>
-      <input type="text" id="cityInput" placeholder="Start typing a city name...">
-    </div>
-    <button id="getInfoButton" disabled>Get Info</button>
-    <div id="cityInfoContainer" class="city-info-container">
-      <h2 id="cityRank"></h2>
-      <p id="cityPopulation2011"></p>
-      <p id="cityPopulation2001"></p>
-      <p id="cityState"></p>
-    </div>
+  <h1>Cities in India</h1>
+  <input type="text" id="cityInput" placeholder="Search for a city...">
+  <select id="cityDropdown">
+    <option value="">Select a city</option>
+  </select>
+  <div id="cityData">
+    <h2>City Data</h2>
+    <p>Rank: <span id="rank"></span></p>
+    <p>Population (2011): <span id="population2011"></span></p>
+    <p>Population (2001): <span id="population2001"></span></p>
+    <p>State: <span id="state"></span></p>
   </div>
-
-  <script src="script.js"></script>
 </body>
 </html>
