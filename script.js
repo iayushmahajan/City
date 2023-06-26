@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", function() {
   const cityPopulation2001 = document.getElementById("cityPopulation2001");
   const cityState = document.getElementById("cityState");
 
+  let cities = []; // Array to store city options
+
   cityInput.addEventListener("input", function() {
     const input = cityInput.value.trim().toLowerCase();
     clearCityDropdown();
@@ -23,28 +25,32 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   function clearCityDropdown() {
+    cities = [];
     cityDropdown.innerHTML = "";
     getInfoButton.disabled = true;
   }
 
   function fetchCityData(input) {
-  const url = `https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${input}&limit=5`;
+    const url = `https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${input}&limit=5`;
 
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      const cities = data[1];
-      clearCityDropdown(); // Clear previous dropdown options
-      cities.forEach(city => {
-        const option = document.createElement("option");
-        option.textContent = city;
-        cityDropdown.appendChild(option);
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        cities = data[1]; // Store the city options
+        populateCityDropdown();
+      })
+      .catch(error => {
+        console.log("Error fetching city data:", error);
       });
-    })
-    .catch(error => {
-      console.log("Error fetching city data:", error);
+  }
+
+  function populateCityDropdown() {
+    cities.forEach(city => {
+      const option = document.createElement("option");
+      option.textContent = city;
+      cityDropdown.appendChild(option);
     });
-}
+  }
 
   function fetchCityDetails(city) {
     const url = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&format=json&titles=${city}`;
@@ -71,10 +77,10 @@ document.addEventListener("DOMContentLoaded", function() {
       const population2001 = matches[3];
       const state = matches[4];
 
-      cityRank.textContent = rank;
-      cityPopulation2011.textContent = population2011;
-      cityPopulation2001.textContent = population2001;
-      cityState.textContent = state;
+      cityRank.textContent = `Rank: ${rank}`;
+      cityPopulation2011.textContent = `Population (2011): ${population2011}`;
+      cityPopulation2001.textContent = `Population (2001): ${population2001}`;
+      cityState.textContent = `State or union territory: ${state}`;
     } else {
       cityRank.textContent = "City information not found";
       cityPopulation2011.textContent = "";
