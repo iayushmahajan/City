@@ -45,11 +45,18 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 }
 
-  function extractCitiesFromPageContent(pageContent) {
-  const regex = /\|\s*city\s*=\s*(.*?)\s*\|/g;
-  const matches = [...pageContent.matchAll(regex)];
+function extractCitiesFromPageContent(pageContent) {
+  const startMarker = '{{City-state-header|' + new Date().getFullYear();
+  const endMarker = '}}';
+  const startIndex = pageContent.indexOf(startMarker);
+  const endIndex = pageContent.indexOf(endMarker, startIndex);
+
+  const tableContent = pageContent.substring(startIndex, endIndex);
+  const regex = /\|\s*city\s*=\s*(.*?)\s*(\||\n)/g;
+  const matches = [...tableContent.matchAll(regex)];
   return matches.map(match => match[1]);
 }
+
 
 
   function populateCityDropdown() {
