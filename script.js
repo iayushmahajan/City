@@ -22,9 +22,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Function to fetch city data from the database
     function fetchCityData(input) {
-        // Make an AJAX request to the Wikipedia API
+        // Make an AJAX request to the CORS proxy server
+        const proxyUrl = "https://cors-anywhere.herokuapp.com/";
         const url = `https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${input}&limit=5`;
-        fetch(url)
+        fetch(proxyUrl + url)
             .then(response => response.json())
             .then(data => {
                 // Extract city names from the response
@@ -53,9 +54,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Function to fetch detailed city information
     function fetchCityDetails(city) {
-        // Make another AJAX request to fetch city details from the database
+        // Make another AJAX request to fetch city details from the CORS proxy server
+        const proxyUrl = "https://cors-anywhere.herokuapp.com/";
         const url = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&format=json&titles=${city}`;
-        fetch(url)
+        fetch(proxyUrl + url)
             .then(response => response.json())
             .then(data => {
                 // Extract relevant information from the response
