@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>City Information</title>
+  <title>City Information Lookup</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-  <h1>City Information</h1>
-
   <div class="container">
-    <input type="text" id="cityInput" placeholder="Type a city name...">
-    <select id="cityDropdown"></select>
+    <h1>City Information Lookup</h1>
+    <div class="input-container">
+      <label for="cityInput">Enter a city name:</label>
+      <input type="text" id="cityInput" placeholder="Start typing a city name...">
+    </div>
+    <div class="dropdown-container">
+      <label for="cityDropdown">Select a city:</label>
+      <select id="cityDropdown"></select>
+    </div>
     <button id="getInfoButton" disabled>Get Info</button>
-  </div>
-
-  <div id="cityDetails">
-    <h2>City Details</h2>
-    <p><strong>Rank:</strong> <span id="cityRank"></span></p>
-    <p><strong>Population (2011):</strong> <span id="cityPopulation2011"></span></p>
-    <p><strong>Population (2001):</strong> <span id="cityPopulation2001"></span></p>
-    <p><strong>State or Union Territory:</strong> <span id="cityState"></span></p>
+    <div id="cityInfoContainer" class="city-info-container">
+      <h2 id="cityRank"></h2>
+      <p id="cityPopulation2011"></p>
+      <p id="cityPopulation2001"></p>
+      <p id="cityState"></p>
+    </div>
   </div>
 
   <script src="script.js"></script>
