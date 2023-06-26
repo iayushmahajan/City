@@ -1,34 +1,22 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
+.container {
+  margin-top: 20px;
 }
 
-h1 {
-    margin-bottom: 20px;
+#cityDetails {
+  margin-top: 30px;
 }
 
-input[type="text"] {
-    width: 300px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+#cityDetails h2 {
+  margin-bottom: 10px;
 }
 
-#cityDropdown {
-    margin-top: 10px;
+#cityDetails p {
+  margin: 5px 0;
 }
 
-#cityDropdown option {
-    padding: 5px;
-    cursor: pointer;
-}
-
-h2 {
-    margin-top: 30px;
-}
-
-p {
-    margin-top: 10px;
+#cityRank,
+#cityPopulation2011,
+#cityPopulation2001,
+#cityState {
+  font-weight: bold;
 }
