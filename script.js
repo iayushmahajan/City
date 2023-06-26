@@ -63,15 +63,20 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function populateCityDropdown(cityOptions) {
-    cityOptions.forEach(city => {
-      const option = document.createElement("option");
-      option.textContent = city;
-      cityDropdown.appendChild(option);
-    });
-    if (cityOptions.length > 0) {
-      getInfoButton.disabled = false;
-    }
+  cityDropdown.innerHTML = "";
+  cityOptions.forEach(city => {
+    const option = document.createElement("option");
+    option.value = city;
+    option.textContent = city;
+    cityDropdown.appendChild(option);
+  });
+  if (cityOptions.length > 0) {
+    getInfoButton.disabled = false;
+  } else {
+    getInfoButton.disabled = true;
   }
+}
+
 
   function fetchCityDetails(city) {
     const url = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&format=json&titles=${city}`;
