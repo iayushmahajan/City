@@ -31,18 +31,26 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function fetchCityData(input) {
-    const url = `https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch=${input} in india&srprop=size`;
+  const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&titles=List_of_cities_in_India_by_population&rvprop=content&formatversion=2`;
 
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        cities = data.query.search.map(item => item.title);
-        populateCityDropdown();
-      })
-      .catch(error => {
-        console.log("Error fetching city data:", error);
-      });
-  }
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const pageContent = data.query.pages[0].revisions[0].content;
+      cities = extractCitiesFromPageContent(pageContent);
+      filterCities(input);
+    })
+    .catch(error => {
+      console.log("Error fetching city data:", error);
+    });
+}
+
+  function extractCitiesFromPageContent(pageContent) {
+  const regex = /\|\s*city\s*=\s*(.*?)\s*\|/g;
+  const matches = [...pageContent.matchAll(regex)];
+  return matches.map(match => match[1]);
+}
+
 
   function populateCityDropdown() {
     cities.forEach(city => {
